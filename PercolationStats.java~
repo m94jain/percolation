@@ -1,0 +1,25 @@
+public class PercolationStats {
+    private int size;
+    private int times;
+    Percolation base;
+    private int[] arr;
+   public PercolationStats(int N, int T)    // perform T independent computational experiments on an N-by-N grid
+   {
+       size = N;
+       times=T;
+       for(int i=0;i<T;i++)
+       {
+           base = new Percolation(N);
+           while(!base.percolates())
+           {
+               
+   }
+       
+   public double mean()                     // sample mean of percolation threshold
+   {
+       double m=
+   public double stddev()                   // sample standard deviation of percolation threshold
+   public double confidenceLo()             // returns lower bound of the 95% confidence interval
+   public double confidenceHi()             // returns upper bound of the 95% confidence interval
+   public static void main(String[] args)   // test client, described below
+}

@@ -1,0 +1,92 @@
+public class Percolation {
+   private int size;
+   private int dim;
+   private int[] openSites;
+   private WeightedQuickUnionUF connections;
+   
+   public Percolation(int N)// create N-by-N grid, with all sites blocked
+   {
+       size=N*N+2;
+       dim=N;
+       openSites = new int[size];
+       connections=new WeightedQuickUnionUF(size);
+   }
+       
+   private int convert(int i,int j)
+   {
+       int index=i*(dim-1)+i+j+1;
+       return index;
+   }
+   
+   public void open(int i, int j)// open site (row i, column j) if it is not already
+   {
+       int wi=convert(i-1,j-1);
+       openSites[wi]=1;
+       if(wi>=1 && wi<=dim)
+       {
+           connections.union(0,wi);
+       }
+       
+       if(wi-1>0 && (wi-1)%dim!=0)
+       {
+           if(openSites[wi-1]==1)
+           {
+               connections.union(wi,wi-1);
+           }
+       }
+       
+       if((wi+1)<=size-1 && wi%dim!=0)
+       {
+           if(openSites[wi+1]==1)
+           {
+               connections.union(wi,wi+1);
+           }
+       }           
+       if((wi+dim)<=size-1 && (wi+dim)>=1)
+       {
+           if(openSites[wi+dim]==1)
+           {
+               connections.union(wi,wi+dim);
+           }
+       }
+       if((wi-dim)<size-1 && (wi-dim)>=1)
+       {
+           if(openSites[wi-dim]==1)
+           {
+                connections.union(wi,wi-dim);
+           }
+       }
+               
+       if(wi>size-2-dim && wi<=size-2)
+       {
+           connections.union(wi,size-1);       
+       }
+           
+   }
+   
+   public boolean isOpen(int i, int j)    // is site (row i, column j) open?
+   {
+       int wi=convert(i-1,j-1);
+       if(openSites[wi]==1)
+       {
+           return true;
+       }
+       else
+           return false;
+   }
+   public boolean isFull(int i, int j)    // is site (row i, column j) full?
+   {
+       int wi=convert(i-1,j-1);
+       return connections.connected(0,wi);
+   }
+   public boolean percolates()            // does the system percolate?
+   {
+       if(connections.connected(0,size-1))
+           return true;
+               
+       else
+           return false;
+       
+   }
+   
+}
